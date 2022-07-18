@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sea_battle/battlefield.dart';
 
@@ -16,8 +18,7 @@ class _ScreenState extends State<Screen>{
   Widget drawField(){
     var rows = <Widget>[];
     int i=1;
-    rows.add(Text(' A       B      C      D      E       F      G      H       I      J'));
-    for (var x=1;x<=battlefield.dimension;x++){
+    for (var x=0;x<=battlefield.dimension;x++){
 
       rows.add(Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -34,27 +35,42 @@ class _ScreenState extends State<Screen>{
 
   List <Widget> drawRow(int x, int i){
     var elements = <Widget>[];
-    elements.add(Text(i.toString()));
-    for (var y=1;y<=battlefield.dimension;y++){
-
-      elements.add( InkWell( onTap: () => onTapProcessint(x, y),//{print('$x, $y');},
-        child:
-        //Row(children: [
-        Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            color: getColor(x,y),
-            border: Border.all(
-            color: Colors.black,
-            width: 2,
-          ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+    for (var y=0;y<=battlefield.dimension;y++){
+if(y==0 || x==0){
+  String s = y.toString();
+  elements.add(SizedBox(
+    width: 30,
+    height: 30,
+    child: Center(
+      child: Text(
+        y==0?x==0?''
+            :x.toString()
+            :String.fromCharCode(y+96).toUpperCase(),
+        textAlign: TextAlign.center,
       ),
+    ),
+  ));
+}
+else {
+  elements.add(InkWell(onTap: () => onTapProcessint(x, y), //{print('$x, $y');},
+    child:
+    //Row(children: [
+    Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        color: getColor(x, y),
+        border: Border.all(
+          color: Colors.black,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+    ),
+  ),
 
-    );
+  );
+}
     }
     return elements;
   }
